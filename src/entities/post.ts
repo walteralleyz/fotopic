@@ -4,7 +4,7 @@ import {
     Column, ManyToOne
 } from 'typeorm';
 
-import { User } from '../entities/user';
+import { FotoUser } from '../entities/user';
 
 @Entity()
 export class Post {
@@ -18,10 +18,10 @@ export class Post {
     text: string;
 
     @Column({
-        type: 'blob'
+        type: 'bytea'
     })
     image?: string;
 
-    @ManyToOne(type => User, user => user.posts)
-    user: User;
+    @ManyToOne(type => FotoUser, user => user.posts)
+    user: FotoUser;
 }

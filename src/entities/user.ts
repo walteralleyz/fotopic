@@ -9,7 +9,7 @@ import { Post } from '../entities/post';
 
 @Entity()
 @Unique(['email'])
-export class User {
+export class FotoUser {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -29,14 +29,14 @@ export class User {
     email: string;
 
     @Column({
-        type: 'blob'
+        type: 'bytea'
     })
     image?: string;
 
-    @Column()
+    @Column({ type: 'bigint' })
     createdAt: number;
 
-    @Column()
+    @Column({ type: 'bigint' })
     updatedAt: number;
 
     @OneToMany(type => Friends, friends => friends.user)

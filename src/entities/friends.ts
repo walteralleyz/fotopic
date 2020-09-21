@@ -4,7 +4,7 @@ import {
     Column, ManyToOne
 } from 'typeorm';
 
-import { User } from '../entities/user';
+import { FotoUser } from '../entities/user';
 
 @Entity()
 export class Friends {
@@ -17,6 +17,6 @@ export class Friends {
     @Column()
     status: number;
 
-    @ManyToOne(type => User, user => user.friends)
-    user: User;
+    @ManyToOne(type => FotoUser, user => user.friends)
+    user: FotoUser;
 }

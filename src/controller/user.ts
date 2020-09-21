@@ -1,11 +1,11 @@
 import { Repository, getRepository } from 'typeorm';
 
-import { User } from '../entities/user';
+import { FotoUser } from '../entities/user';
 
 export class Controller {
     read(request: any, response: any) {
         const { id } = request.params;
-        const user: Repository<User> = getRepository(User);
+        const user: Repository<FotoUser> = getRepository(FotoUser);
 
         user.findOne(id)
         .then(data => {
@@ -15,7 +15,7 @@ export class Controller {
     }
 
     create(request: any, response: any) {
-        const user: Repository<User> = getRepository(User);
+        const user: Repository<FotoUser> = getRepository(FotoUser);
 
         const {
             name,
@@ -26,7 +26,7 @@ export class Controller {
 
         if(!name || !email) return response.status(400).json({ error: 'Faltam dados!' });
 
-        const userObj = new User();
+        const userObj = new FotoUser();
         const date = new Date();
 
         userObj.name = name;
@@ -45,7 +45,7 @@ export class Controller {
 
     signin(request: any, response: any) {
         const { email } = request.body;
-        const user: Repository<User> = getRepository(User);
+        const user: Repository<FotoUser> = getRepository(FotoUser);
 
         user.findOne({ email })
         .then(data => response.status(200).json({ data: data.email }))
@@ -61,7 +61,7 @@ export class Controller {
             image
         } = request.body;
 
-        const user: Repository<User> = getRepository(User);
+        const user: Repository<FotoUser> = getRepository(FotoUser);
 
         const userData = await user.findOne(id);
 
@@ -78,7 +78,7 @@ export class Controller {
     async delete(request: any, response: any) {
         const { id } = request.params;
 
-        const user: Repository<User> = getRepository(User);
+        const user: Repository<FotoUser> = getRepository(FotoUser);
 
         const userData = await user.delete({ id });
 
