@@ -4,12 +4,11 @@ import {
     Column, OneToMany, Unique
 } from 'typeorm';
 
-import { Friends } from '../entities/friends';
-import { Post } from '../entities/post';
+import { ItemList } from './itemList';
 
 @Entity()
 @Unique(['email'])
-export class FotoUser {
+export class SuperUser {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -18,12 +17,6 @@ export class FotoUser {
         type: 'varchar'
     })
     name: string;
-
-    @Column({
-        length: 255,
-        type: 'varchar'
-    })
-    description?: string;
 
     @Column()
     email: string;
@@ -39,9 +32,6 @@ export class FotoUser {
     @Column({ type: 'bigint' })
     updatedAt: number;
 
-    @OneToMany(type => Friends, friends => friends.user)
-    friends: Friends[];
-
-    @OneToMany(type => Post, post => post.user)
-    posts: Post[];
+    @OneToMany(type => ItemList, items => items.user)
+    posts: ItemList[];
 }

@@ -1,22 +1,20 @@
 import 'reflect-metadata';
-import { createConnection, Connection } from 'typeorm';
-import { FotoUser } from '../entities/user';
-import { Post } from '../entities/post';
-import { Friends } from '../entities/friends';
+import { createConnection } from 'typeorm';
+import { SuperUser } from '../entities/user';
+import { ItemList } from '../entities/itemList';
 
-export function connect(path: string) {
+export function connect() {
     createConnection({
         type: 'postgres',
-        database: 'fotobase',
+        database: 'superlista',
         port: 5432,
         username: 'fotopic',
         password: 'mmfotomm',
         synchronize: true,
         logging: false,
         entities: [
-            FotoUser,
-            Post,
-            Friends
+            SuperUser,
+            ItemList
         ]
     })
     .then(() => console.log('Database Connected!'))

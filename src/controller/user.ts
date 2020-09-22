@@ -1,7 +1,6 @@
 import { Repository, getRepository } from 'typeorm';
 
-import { FotoUser } from '../entities/user';
-import { Friends } from '../entities/friends';
+import { SuperUser } from '../entities/user';
 
 export class Controller {
     read(request: any, response: any) {
@@ -17,18 +16,16 @@ export class Controller {
         const {
             name,
             email,
-            description,
             image
         } = request.body;
 
         if(!name || !email) return response.status(400).json({ error: 'Faltam dados!' });
 
-        const userObj = new FotoUser();
+        const userObj = new SuperUser();
         const date = new Date();
 
         userObj.name = name;
         userObj.email = email;
-        userObj.description = description ? description : 'false';
         userObj.image = image ? image : 'false';
         userObj.createdAt = date.getTime();
         userObj.updatedAt = date.getTime();
@@ -48,7 +45,6 @@ export class Controller {
         const {
             name,
             email,
-            description,
             image
         } = request.body;
 
@@ -58,7 +54,6 @@ export class Controller {
 
         if(name) userData.name = name;
         if(email) userData.email = email;
-        if(description) userData.description = description;
         if(image) userData.image = image;
 
         respond(response, user.save(userData));
@@ -69,24 +64,6 @@ export class Controller {
         const user = repository();
         respond(response, user.delete({ id }));
     }
-
-    async add(request: any, response: any) {
-        const { id } = request.params;
-        const { email } = request.body;
-
-        const user = repository();
-        const friend: Repository<Friends> = getRepository(Friends);
-
-        const userData = await user.findOne({ email });
-
-        const friendData = new Friends();
-
-        friendData.friendId = id;
-        friendData.user = userData;
-        friendData.status = 0;
-
-        respond(response, friend.save(friendData));
-    }
 }
 
 export const respond = (response: any, fn: any) => {
@@ -95,4 +72,4 @@ export const respond = (response: any, fn: any) => {
     .catch((err: any) => response.status(400).json({ error: 'Falhou!' }));
 }
 
-export const repository = (): Repository<FotoUser> => getRepository(FotoUser);
+export const repository = (): Repository<SuperUser> => getRepository(SuperUser);
