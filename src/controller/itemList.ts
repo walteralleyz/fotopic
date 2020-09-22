@@ -4,23 +4,17 @@ import { SuperUser } from '../entities/user';
 
 export class Controller {
     async create(request: any, response: any) {
-        const { email, store } = request.body;
+        const { email } = request.body;
 
-        const postSchema: ItemList = new ItemList();
+        let postSchema: ItemList = new ItemList();
         const post = repository();
-        const items = getItems(request);
         const date = new Date();
-
-        if(!store || !email || !items) return response.status(400).json({ error: 'Parametros em falta!' });
 
         const user: Repository<SuperUser> = getRepository(SuperUser);
         const userData = await user.findOne({ email });
 
-        postSchema.store = store;
-        postSchema.items = JSON.stringify(items);
         postSchema.user = userData;
-        postSchema.createdAt = date.getTime();
-        postSchema.updatedAt = date.getTime();
+        postSchema = createRoutine(postSchema, request, date.getTime(), date.getTime());
 
         respond(response, post.save(postSchema));
     }
@@ -34,17 +28,10 @@ export class Controller {
     async update(request: any, response: any) {
         const {id} = request.params;
         const post = repository();
-
-        const { store } = request.body;
         const date = new Date();
 
-        const postData = await post.findOne(id);
-        const items = getItems(request);
-
-        if(store) postData.store = store;
-        if(items) postData.items = JSON.stringify(items);
-
-        postData.updatedAt = date.getTime();
+        let postData = await post.findOne(id);
+        postData = createRoutine(postData, request, postData.createdAt, date.getTime());
 
         respond(response, post.save(postData));
     }
@@ -65,29 +52,26 @@ export const respond = (response: any, fn: any) => {
 
 export const repository = (): Repository<ItemList> => getRepository(ItemList);
 
-export const getItems = (request: any): object | boolean => {
+export const getItems = (section: [], item: [], quantity: [], type: []): object | boolean => {
     let items: boolean | object = false;
 
-    const {
-        section,
-        item,
-        quantity,
-        type
-    } = request.body;
-
-    if(!isObject(section) || !isObject(item) || !isObject(quantity) || !isObject(type)) return items;
-
-    if(section && item && quantity && type) {
-        if(section.length > 0
-        &&  sameLength(item, section)
-        &&  sameLength(quantity, section)
-        &&  sameLength(type, section)) {
-            items = { section, item, quantity, type }; 
-        }
+    if(sameLength(item, section) &&  sameLength(quantity, section) &&  sameLength(type, section)) {
+        items = { section, item, quantity, type }; 
     }
 
     return items;
 };
 
-export const isObject = (field: any) => typeof field === 'object';
 export const sameLength = (entry: [], referer: []) => entry.length === referer.length;
+
+export const createRoutine = (items: ItemList, request: any, created: number, updated: number): ItemList => {
+    const { store, section, item, quantity, type } = request.body;
+    const JSONItem = getItems(section, item, quantity, type);
+
+    items.store = store;
+    items.items = JSON.stringify(JSONItem);
+    items.createdAt = created;
+    items.updatedAt = updated;
+
+    return items;
+}

@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/', (request: any, response: any) => response.sendFile(path.join(__dirname, '../public', 'index.html')));
 
 app.use('/user', userRoutes);
-app.use('/post', itemRoutes);
+app.use('/item', itemRoutes);
 
 // app.use('*', (request: any, response: any) => {
 //     response.status(403).json({ error: 'Esse caminho está indisponivel!' });

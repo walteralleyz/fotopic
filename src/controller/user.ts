@@ -13,22 +13,10 @@ export class Controller {
     create(request: any, response: any) {
         const user = repository();
 
-        const {
-            name,
-            email,
-            image
-        } = request.body;
-
-        if(!name || !email) return response.status(400).json({ error: 'Faltam dados!' });
-
-        const userObj = new SuperUser();
+        let userObj = new SuperUser();
         const date = new Date();
 
-        userObj.name = name;
-        userObj.email = email;
-        userObj.image = image ? image : 'false';
-        userObj.createdAt = date.getTime();
-        userObj.updatedAt = date.getTime();
+        userObj = createRoutine(userObj, request, date.getTime(), date.getTime());
 
         respond(response, user.save(userObj));
     }
@@ -42,19 +30,12 @@ export class Controller {
 
     async update(request: any, response: any) {
         const { id } = request.params;
-        const {
-            name,
-            email,
-            image
-        } = request.body;
 
         const user = repository();
+        const date = new Date();
+        let userData = await user.findOne(id);
 
-        const userData = await user.findOne(id);
-
-        if(name) userData.name = name;
-        if(email) userData.email = email;
-        if(image) userData.image = image;
+        userData = createRoutine(userData, request, userData.createdAt, date.getTime());
 
         respond(response, user.save(userData));
     }
@@ -73,3 +54,15 @@ export const respond = (response: any, fn: any) => {
 }
 
 export const repository = (): Repository<SuperUser> => getRepository(SuperUser);
+
+export const createRoutine = (user: SuperUser, request: any, created: number, updated: number): SuperUser => {
+    const { name, email, image } = request.body;
+
+    user.name = name;
+    user.email = email;
+    user.image = image ? image : 'false';
+    user.createdAt = created;
+    user.updatedAt = updated;
+
+    return user;
+}
