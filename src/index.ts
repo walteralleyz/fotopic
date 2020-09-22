@@ -18,4 +18,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/user', userRoutes);
 app.use('/post', postRoutes);
 
+app.use('*', (request: any, response: any) => {
+    response.status(403).json({ error: 'Esse caminho está indisponivel!' });
+})
+
 app.listen(port, () => console.log('Listen at port %d', port));

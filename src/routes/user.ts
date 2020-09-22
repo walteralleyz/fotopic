@@ -9,5 +9,6 @@ export const routes = [
     Router().post('/signup', user.create),
     Router().post('/signin', user.signin),
     Router().delete('/:id', user.delete),
-    Router().put('/:id', user.update)
+    Router().put('/:id', user.update),
+    Router().put('/add/:id', user.add)
 ];

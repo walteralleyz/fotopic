@@ -1,3 +1,4 @@
+import { response } from 'express';
 import { Repository, getRepository } from 'typeorm';
 import { Post } from '../entities/post';
 import { FotoUser } from '../entities/user';
@@ -11,7 +12,7 @@ export class Controller {
         } = request.body;
 
         const postSchema: Post = new Post();
-        const post: Repository<Post> = getRepository(Post);
+        const post = repository();
 
         if(!email || !text) return response.status(400).json({ error: 'Parametros em falta!' });
 
@@ -22,12 +23,44 @@ export class Controller {
         postSchema.image = image ? image : 'false';
         postSchema.user = userData;
 
-        post.save(postSchema)
-        .then(data => response.status(200).json(data))
-        .catch(err => response.status(400).json({ error: 'Falhou!' }));
+        respond(response, post.save(postSchema));
     }
 
-    // read(request: any, response: any) {}
-    // update(request: any, response: any) {}
-    // delete(request: any, response: any) {}
+    read(request: any, response: any) {
+        const {id} = request.params;
+        const post = repository();
+        respond(response, post.find({ where: { user: id }}));
+    }
+
+    async update(request: any, response: any) {
+        const {id} = request.params;
+        const post = repository();
+
+        const {
+            text,
+            image
+        } = request.body;
+
+        const postData = await post.findOne(id);
+
+        if(text) postData.text = text;
+        if(image) postData.image = image;
+
+        respond(response, post.save(postData));
+    }
+
+    delete(request: any, response: any) {
+        const {id} = request.params;
+
+        const post = repository();
+        respond(response, post.delete(id));
+    }
 }
+
+export const respond = (response: any, fn: any) => {
+    fn
+    .then((data: any) => response.status(200).json(data))
+    .catch((err: any) => response.status(400).json({ error: 'Falhou!' }));
+}
+
+export const repository = (): Repository<Post> => getRepository(Post);

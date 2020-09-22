@@ -1,21 +1,18 @@
 import { Repository, getRepository } from 'typeorm';
 
 import { FotoUser } from '../entities/user';
+import { Friends } from '../entities/friends';
 
 export class Controller {
     read(request: any, response: any) {
         const { id } = request.params;
-        const user: Repository<FotoUser> = getRepository(FotoUser);
+        const user = repository();
 
-        user.findOne(id)
-        .then(data => {
-            response.status(200).json(data);
-        })
-        .catch(err => response.status(400).json({ error: 'Usuário não encontrado!' }));
+        respond(response, user.findOne(id));
     }
 
     create(request: any, response: any) {
-        const user: Repository<FotoUser> = getRepository(FotoUser);
+        const user = repository();
 
         const {
             name,
@@ -36,20 +33,14 @@ export class Controller {
         userObj.createdAt = date.getTime();
         userObj.updatedAt = date.getTime();
 
-        user.save(userObj)
-        .then(data => {
-            response.status(200).json(data);
-        })
-        .catch(err => response.status(400).json({ error: 'Falhou!' }));
+        respond(response, user.save(userObj));
     }
 
     signin(request: any, response: any) {
         const { email } = request.body;
-        const user: Repository<FotoUser> = getRepository(FotoUser);
+        const user = repository();
 
-        user.findOne({ email })
-        .then(data => response.status(200).json({ data: data.email }))
-        .catch(err => response.status(403).json({ error: 'Não encontrado!' }));
+        respond(response, user.findOne({ email }));
     }
 
     async update(request: any, response: any) {
@@ -61,7 +52,7 @@ export class Controller {
             image
         } = request.body;
 
-        const user: Repository<FotoUser> = getRepository(FotoUser);
+        const user = repository();
 
         const userData = await user.findOne(id);
 
@@ -70,18 +61,38 @@ export class Controller {
         if(description) userData.description = description;
         if(image) userData.image = image;
 
-        user.save(userData)
-        .then(data => response.status(200).json(data))
-        .catch(err => response.status(400).json({ error: 'Usuário não encontrado!' }));
+        respond(response, user.save(userData));
     }
 
-    async delete(request: any, response: any) {
+    delete(request: any, response: any) {
         const { id } = request.params;
+        const user = repository();
+        respond(response, user.delete({ id }));
+    }
 
-        const user: Repository<FotoUser> = getRepository(FotoUser);
+    async add(request: any, response: any) {
+        const { id } = request.params;
+        const { email } = request.body;
 
-        const userData = await user.delete({ id });
+        const user = repository();
+        const friend: Repository<Friends> = getRepository(Friends);
 
-        response.status(200).json(userData);
+        const userData = await user.findOne({ email });
+
+        const friendData = new Friends();
+
+        friendData.friendId = id;
+        friendData.user = userData;
+        friendData.status = 0;
+
+        respond(response, friend.save(friendData));
     }
 }
+
+export const respond = (response: any, fn: any) => {
+    fn
+    .then((data: any) => response.status(200).json(data))
+    .catch((err: any) => response.status(400).json({ error: 'Falhou!' }));
+}
+
+export const repository = (): Repository<FotoUser> => getRepository(FotoUser);
