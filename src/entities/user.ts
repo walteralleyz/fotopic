@@ -26,6 +26,9 @@ export class SuperUser {
     })
     image?: string;
 
+    @Column()
+    code?: number;
+
     @Column({ type: 'bigint' })
     createdAt: number;
 

@@ -10,5 +10,6 @@ export const routes = [
     Router().post('/signup', checkCreate, regularHandler, user.create),
     Router().post('/signin', checkLogin, regularHandler, user.signin),
     Router().delete('/:id', user.delete),
-    Router().put('/:id', user.update)
+    Router().put('/:id', user.update),
+    Router().post('/verifySign', user.verifySignin)
 ];
