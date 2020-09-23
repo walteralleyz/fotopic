@@ -16,13 +16,11 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('/', (request: any, response: any) => response.sendFile(path.join(__dirname, '../public', 'index.html')));
-
 app.use('/user', userRoutes);
 app.use('/item', itemRoutes);
 
-// app.use('*', (request: any, response: any) => {
-//     response.status(403).json({ error: 'Esse caminho está indisponivel!' });
-// })
+app.use('*', (request: any, response: any) => {
+    response.status(403).json({ error: 'Esse caminho está indisponivel!' });
+});
 
 app.listen(port, () => console.log('Listen at port %d', port));
