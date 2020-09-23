@@ -9,6 +9,11 @@ export const checkLogin = [
     body('email').not().isEmpty().isEmail()
 ];
 
+export const checkUpdate = [
+    body('email').not().isEmpty().isEmail(),
+    body('name').isLength({ min: 4 }).not().isNumeric()
+]
+
 export const regularHandler = (request: any, response: any, next: any) => {
     const errors = validationResult(request);
 

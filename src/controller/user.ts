@@ -1,8 +1,11 @@
 import { Repository, getRepository } from 'typeorm';
 import JWT from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
 import { SuperUser } from '../entities/user';
 import { sendEmailSignin } from './auth';
+
+dotenv.config();
 
 export class Controller {
     read(request: any, response: any) {
@@ -56,7 +59,7 @@ export class Controller {
         const { code, email } = request.body;
 
         const user = repository();
-        const token = JWT.sign(code, 'mercado');
+        const token = JWT.sign(code, process.env.JWT_SECRET);
 
         user.findOne({ code })
         .then(data => {
