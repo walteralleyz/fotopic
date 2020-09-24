@@ -1,35 +1,22 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
-import Emoji from '../components/emoji';
+import Nav from './nav';
+import { routes } from '../helpers/routes';
 
-const Navbar = () => (
-    <nav className='nav'>
-        <ul className='nav__list'>
-            <li>
-                <Link to='/' className='nav__title'>
-                    <Emoji description='sobre nos' icon='market' />
-                    &nbsp; SuperLista
-                </Link>
-            </li>
-            <li className='text-right'>
-                <ul className='nav__list'>
-                    <li className='small-text-middle'>
-                        <Link to='/about'>
-                            <Emoji description='sobre nos' icon='book' />
-                            &nbsp; Sobre Nós
-                        </Link>
-                    </li>
-                    <li className='small-text-middle'>
-                        <Link to='/api'>
-                            <Emoji description='api' icon='laptop' />
-                            &nbsp; API
-                        </Link>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </nav>
-);
+export default function Navbar() {
+    const title = { text: 'SuperLista', icon: 'market', description: 'titulo do site', route: routes.main };
+    const options = [
+        { text: 'Sobre Nós', icon: 'book', description: 'sobre', route: '/about' },
+        { text: 'Contato', icon: 'phone', description: 'contate-nos', route: '/contact' },
+        { text: 'API', icon: 'laptop', description: 'api', route: '/api' }
+    ];
 
-export default Navbar;
+    return (
+        <nav className='nav'>
+            <Nav
+                title={title}
+                options={options}
+            />
+        </nav>
+    )
+};

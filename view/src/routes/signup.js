@@ -5,6 +5,8 @@ import Form from '../components/form';
 import Input from '../components/input';
 import Button from '../components/button';
 
+import { routes } from '../helpers/routes';
+
 export default function Signup() {
     const [userEmail, setUserEmail] = useState('');
     const [userName, setUserName] = useState('');
@@ -27,7 +29,7 @@ export default function Signup() {
                 name='Email'
             />
 
-            <Link to='/signin' className='anchor'>
+            <Link to={routes.signin} className='anchor'>
                 Já tenho uma conta. Me tire daqui!
             </Link>
 

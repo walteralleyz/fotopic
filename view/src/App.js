@@ -10,9 +10,12 @@ import PrivateRoute from './routes/privateroute';
 import NotFound from './routes/notfound';
 import Signin from './routes/signin';
 import Signup from './routes/signup';
+import Main from './routes/main';
 
 import Container from './components/container';
 import Navbar from './components/navbar';
+
+import { routes } from './helpers/routes';
 
 function App() {
 	return (
@@ -20,14 +23,14 @@ function App() {
 			<BrowserRouter>
 				<Navbar />
 				<Switch>
-					<PrivateRoute exact path='/'>
-						<div>Menu Entrada</div>
+					<PrivateRoute exact path={routes.main}>
+						<Main />
 					</PrivateRoute>
 
-					<Route path='/signin'>
+					<Route path={routes.signin}>
 						<Signin />
 					</Route>
-					<Route path='/signup'>
+					<Route path={routes.signup}>
 						<Signup />
 					</Route>
 

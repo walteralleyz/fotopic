@@ -9,7 +9,8 @@ const Emoji = ({ icon, description }) => (
 const EmojiList = {
     'laptop': <>&#128187;</>,
     'book': <>&#128214;</>,
-    'market': <>&#128722;</>
+    'market': <>&#128722;</>,
+    'phone': <>&#128226;</>
 };
 
 export default Emoji;
