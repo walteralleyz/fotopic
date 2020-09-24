@@ -1,2 +1,2 @@
-# fotopic
-An instagram like made with Node and React
+# SuperLista
+**Remake static superlista using React**
