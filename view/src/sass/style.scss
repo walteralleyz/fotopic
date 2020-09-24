@@ -1,0 +1,152 @@
+* {
+    margin: 0 0;
+    padding: 0 0;
+    box-sizing: border-box;
+}
+
+.container {
+    min-height: 100vh;
+    background-color: #c9c9c9;
+}
+
+.nav {
+    background-image: linear-gradient(to right bottom, #9808ab, #7f46c8, #5f65db, #3a7de7, #1292eb);
+    padding: 8px 16px;
+    margin-bottom: 32px;
+    text-shadow: 0 0 1px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 2px 5px 5px rgba(0, 0, 0, 0.125);
+
+    .nav__title {
+        font-weight: bold;
+        font-size: 24px;
+    }
+
+    .nav__list {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        list-style: none;
+        padding: 0 16px;
+
+        a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        li {
+            flex-grow: 1;
+        }
+
+        @media only screen and (max-width: 620px) {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 0 0;
+        }
+    }
+}
+
+.small-text-middle {
+    line-height: 24px;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-danger {
+    color: #b81111;
+}
+
+.holder--404 {
+    width: 85%;
+    margin: 0 auto;
+    text-align: center;
+
+    img {
+        width: 40%;
+    }
+}
+
+.form {
+    margin: 0 auto;
+    padding: 32px;
+    width: 350px;
+    background-color: #fff;
+    border-radius: 5px;
+
+    @media only screen and (max-width: 620px) {
+        width: 100vw;
+        border-radius: 0;
+    }
+}
+
+.form__title {
+    margin-bottom: 32px;
+    text-align: center;
+    color: #333;
+    text-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+}
+
+.form__holder--input {
+    display: flex;
+    flex-direction: column;
+    margin: 16px 0;
+
+    input {
+        margin: 10px 0;
+        flex-grow: 1;
+    }
+}
+
+.form__input {
+    border: none;
+    padding: 8px;
+    border-bottom: 1px solid #333;
+    transition: 0.4s;
+
+    &:focus {
+        border-bottom-color: #9808ab;
+    }
+}
+
+.button {
+    padding: 8px 16px;
+    border: none;
+    background-color: #333;
+    color: #fff;
+    font-weight: 600;
+    transition: 0.3s;
+
+    &:hover {
+        cursor: pointer;
+        background-color: #333;
+    }
+}
+
+.button--blue {
+    background-color: #18528f;
+}
+
+.button--purple {
+    background-color: #9808ab;
+}
+
+.button--red {
+    background-color: #b81111;
+}
+
+.button--small {
+    padding: 8px 16px;
+}
+
+.button--large {
+    padding: 16px 32px;
+}
+
+.anchor {
+    text-decoration: none;
+    color: #18528f;
+    display: block;
+    font-size: small;
+    margin: 16px 0;
+}

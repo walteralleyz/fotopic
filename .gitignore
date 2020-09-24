@@ -1,4 +1,5 @@
 /node_modules
 /build
 /.env
-/superlista
+/view/node_modules
+/view/build
