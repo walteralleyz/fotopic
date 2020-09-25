@@ -2,6 +2,7 @@ import express from "express";
 import morgan from 'morgan';
 import bodyParser  from 'body-parser';
 import path from 'path';
+import cors from 'cors';
 
 import { connect } from './helpers/orm';
 import { routes as userRoutes } from './routes/user';
@@ -12,6 +13,7 @@ const port: string | number = process.env.PORT || 5000;
 
 connect();
 
+app.use(cors());
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

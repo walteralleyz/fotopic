@@ -9,7 +9,7 @@ const user: User = new User();
 export const routes = [
     Router().post('/signup', checkCreate, regularHandler, user.create),
     Router().post('/signin', checkLogin, regularHandler, user.signin),
-    Router().post('/verifySign', user.verifySignin),
+    Router().post('/verifysign', user.verifySignin),
 
     Router().delete('/:id', verifyJWT, user.delete),
     Router().put('/:id', verifyJWT, checkUpdate, regularHandler, user.update),

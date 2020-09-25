@@ -11,5 +11,5 @@ export const saveDataStorage = (key, data) => {
 
 export const getDataStorage = key => {
     if(typeof window !== 'undefined')
-        localStorage.getItem(key);
+        return JSON.parse(localStorage.getItem(key));
 }
