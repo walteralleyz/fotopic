@@ -1,7 +1,7 @@
 export const isAuthenticated = key => {
     const user = getDataStorage(key) || {};
 
-    return user.email && user.token;
+    return user.id && user.email && user.token;
 };
 
 export const saveDataStorage = (key, data) => {
@@ -12,4 +12,9 @@ export const saveDataStorage = (key, data) => {
 export const getDataStorage = key => {
     if(typeof window !== 'undefined')
         return JSON.parse(localStorage.getItem(key));
+}
+
+export const removeStorage = key => {
+    if(typeof window !== 'undefined')
+        localStorage.removeItem(key);
 }

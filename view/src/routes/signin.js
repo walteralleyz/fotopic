@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import Form from '../components/form';
 import Input from '../components/input';
@@ -11,7 +12,9 @@ import { sendData } from '../helpers/fetch';
 import { isEmail } from '../helpers/validator';
 import { saveDataStorage } from '../helpers/auth';
 
-export default function Signin() {
+import * as actions from '../actions/useraction';
+
+function Signin({ toggleLogged }) {
     const [userEmail, setUserEmail] = useState('');
     const [redirect, setRedirect] = useState(false);
 
@@ -36,7 +39,8 @@ export default function Signin() {
             'POST'
         )
             .then(data => {
-                saveDataStorage('user', {email: userEmail, token: data.token});
+                toggleLogged(true);
+                saveDataStorage('user', data);
                 setRedirect(true);
             });
     };
@@ -90,3 +94,13 @@ export default function Signin() {
         </Form>
     )
 }
+
+const mapStateToProps = (state, ownProps) => ({
+    logged: state.logged
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    toggleLogged: b => dispatch(actions.toggleLogged(b))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signin);

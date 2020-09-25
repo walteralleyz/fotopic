@@ -1,6 +1,8 @@
 export const routes = {
     signin: '/signin',
     signup: '/signup',
+    signout: '/signout',
+    new: '/new',
     main: '/'
 };
 

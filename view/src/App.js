@@ -10,6 +10,7 @@ import PrivateRoute from './routes/privateroute';
 import NotFound from './routes/notfound';
 import Signin from './routes/signin';
 import Signup from './routes/signup';
+import Signout from './routes/signout';
 import Main from './routes/main';
 
 import Container from './components/container';
@@ -25,6 +26,10 @@ function App() {
 				<Switch>
 					<PrivateRoute exact path={routes.main}>
 						<Main />
+					</PrivateRoute>
+
+					<PrivateRoute exact path={routes.signout}>
+						<Signout />
 					</PrivateRoute>
 
 					<Route path={routes.signin}>

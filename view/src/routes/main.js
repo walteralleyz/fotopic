@@ -5,19 +5,22 @@ import { baseLink, links } from '../helpers/routes';
 import { getDataStorage } from '../helpers/auth';
 
 export default function Main() {
-    const [itemList, setItemList] = useState('');
-    const user = getDataStorage('user');
+    const [itemList, setItemList] = useState(false);
+    const [user, setUser] = useState(false);
 
     const items = useCallback(() => {
-        const link = `${baseLink}${links.items.base}/${user.id}`;
+        if(user) {
+            const link = `${baseLink}${links.items.base}/${user.id}`;
 
-        getData(link)
-        .then(data => setItemList(data));
+            getData(link, user.token)
+            .then(data => setItemList(data));
+        }
     }, [user]);
 
+    useEffect(() => setUser(getDataStorage('user')), []);
     useEffect(() => items(), [items]);
 
     return (
-        <div>Main</div>
+        <div>{itemList ? 'items' : 'main'}</div>
     )
 }
