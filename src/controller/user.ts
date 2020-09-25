@@ -63,7 +63,7 @@ export class Controller {
 
         user.findOne({ code })
         .then(data => {
-            if(data.email === email) response.status(200).json({ token });
+            if(data.email === email) response.status(200).json({ email: data.email, id: data.id, token });
             else response.status(400).json({ error: 'Falhou!' });
         })
         .catch((err: any) => response.status(400).json({ error: 'Falhou!' }));
