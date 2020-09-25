@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import Nav from './nav';
-import { routes } from '../helpers/routes';
-import * as actions from '../actions/useraction';
-import { isAuthenticated } from '../helpers/auth';
+import { routes } from '../../helpers/routes';
+import * as userAction from '../../actions/useraction';
+import { isAuthenticated } from '../../helpers/auth';
 
 function Navbar({ user, toggleLogged }) {
     const title = { text: 'SuperLista', icon: 'market', description: 'titulo do site', route: routes.main };
-    const [buyOption, setBuyOption] = useState({ text: 'Minhas Listas', icon: 'doc', description: 'minhas compras', route: routes.main});
 
     const options = user.logged 
     ? [
-        buyOption,
+        { text: 'Nova Lista', icon: 'doc', description: 'minhas compras', route: routes.new},
         { text: 'Sair', icon: 'exit', description: 'sair', route: routes.signout}
     ] 
     : [
@@ -27,20 +26,11 @@ function Navbar({ user, toggleLogged }) {
         }
     }, [toggleLogged]);
 
-    useEffect(() => {
-        if(window.location.pathname === '/')
-            setBuyOption({ text: 'Nova Lista', icon: 'doc', description: 'nova lista compra', route: routes.new});
-        else
-            setBuyOption({ text: 'Minhas Listas', icon: 'doc', description: 'minhas compras', route: routes.main});
-    }, []);
-
     return (
-        <nav className='nav'>
-            <Nav
-                title={title}
-                options={options}
-            />
-        </nav>
+        <Nav
+            title={title}
+            options={options}
+        />
     )
 };
 
@@ -49,7 +39,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    toggleLogged: b => dispatch(actions.toggleLogged(b))
+    toggleLogged: b => dispatch(userAction.toggleLogged(b))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

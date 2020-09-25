@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import Form from '../components/form';
-import Input from '../components/input';
-import Button from '../components/button';
-import Modal from '../components/modal';
+import Holder from '../components/forms/signin';
+import Modal from '../components/modular/modal';
 
 import { routes, baseLink, links } from '../helpers/routes';
 import { sendData } from '../helpers/fetch';
@@ -62,25 +60,11 @@ function Signin({ toggleLogged }) {
     };
 
     return (
-        <Form title='Bem vindo de volta!'>
-            <Input
-                type='email'
-                value={userEmail}
-                changer={e => setUserEmail(e.currentTarget.value)}
-                text='Ex.: roberto@gmail.com'
-                name='Email'
+        <>
+            <Holder
+                email={{value: userEmail, changer: setUserEmail}}
+                handleSubmit={handleSubmit}
             />
-
-            <Link to={routes.signup} className='anchor'>
-                Ainda não tem uma conta? Crie Agora!
-            </Link>
-
-            <Button
-                type='submit'
-                color='purple'
-                handler={handleSubmit}
-            />
-
             {modal.visible &&
                 <Modal 
                     title={modal.title}
@@ -91,7 +75,7 @@ function Signin({ toggleLogged }) {
             }
 
             {redirect && <Redirect to={routes.main} />}
-        </Form>
+        </>
     )
 }
 

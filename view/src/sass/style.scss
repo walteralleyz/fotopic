@@ -9,6 +9,68 @@
     background-color: #c9c9c9;
 }
 
+.holder--list {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-height: calc(100vh - 45px);
+
+    @media only screen and (max-width: 620px) {
+        flex-direction: column;
+    }
+
+    .aside {
+        width: 250px;
+        max-height: calc(100vh - 45px);
+        background-color: #7f46c8;
+        position: relative;
+
+        @media only screen and (max-width: 620px) {
+            width: 100%;
+        }
+
+        .product {
+            padding: 8px;
+            color: #fff;
+            text-shadow: 0 0 1px rgba(0, 0, 0, 0.8);
+
+            .product__description {
+                margin: 4px 0;
+                display: flex;
+                flex-direction: row;
+                text-transform: capitalize;
+                justify-content: space-between;
+                color: #ccc;
+            }
+
+            .product__title {
+                display: flex;
+                justify-content: space-between;
+                text-transform: capitalize;
+
+                span {
+                    font-size: 0.7rem;
+
+                    &:hover {
+                        cursor: pointer;
+                        opacity: 0.6;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.holder--product {
+    max-height: calc(100% - 33px);
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+.holder--product::-webkit-scrollbar-track {
+    appearance: none;
+}
+
 .modal {
     position: absolute;
     width: 100vw;
@@ -21,7 +83,7 @@
     .modal__container {
         background-color: #fff;
         position: absolute;
-        width: 50%;
+        width: 30%;
         padding-bottom: 16px;
         border-radius: 5px;
         left: 50%;
@@ -70,9 +132,8 @@
 }
 
 .nav {
-    background-image: linear-gradient(to right bottom, #9808ab, #7f46c8, #5f65db, #3a7de7, #1292eb);
+    background-color: #7f46c8;
     padding: 8px 16px;
-    margin-bottom: 32px;
     text-shadow: 0 0 1px rgba(0, 0, 0, 0.8);
     box-shadow: 0 2px 5px 5px rgba(0, 0, 0, 0.125);
 
@@ -128,7 +189,7 @@
 }
 
 .form {
-    margin: 0 auto;
+    margin: 16px auto;
     padding: 32px;
     width: 350px;
     background-color: #fff;
@@ -155,6 +216,12 @@
     input {
         margin: 10px 0;
         flex-grow: 1;
+    }
+
+    select {
+        background-color: #fff;
+        appearance: none;
+        -webkit-appearance: none;
     }
 }
 
@@ -201,6 +268,10 @@
 
 .button--large {
     padding: 16px 32px;
+}
+
+.button--full {
+    width: 100%;
 }
 
 .anchor {

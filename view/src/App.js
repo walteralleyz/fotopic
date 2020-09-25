@@ -11,10 +11,11 @@ import NotFound from './routes/notfound';
 import Signin from './routes/signin';
 import Signup from './routes/signup';
 import Signout from './routes/signout';
+import NewList from './routes/newlist';
 import Main from './routes/main';
 
-import Container from './components/container';
-import Navbar from './components/navbar';
+import Container from './components/modular/container';
+import Navbar from './components/modular/navbar';
 
 import { routes } from './helpers/routes';
 
@@ -30,6 +31,10 @@ function App() {
 
 					<PrivateRoute exact path={routes.signout}>
 						<Signout />
+					</PrivateRoute>
+
+					<PrivateRoute exact path={routes.new}>
+						<NewList />
 					</PrivateRoute>
 
 					<Route path={routes.signin}>
