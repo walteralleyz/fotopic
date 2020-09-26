@@ -36,11 +36,13 @@ export class Controller {
         respond(response, post.save(postData));
     }
 
-    delete(request: any, response: any) {
+    async delete(request: any, response: any) {
         const {id} = request.params;
 
         const post = repository();
-        respond(response, post.delete(id));
+		const target = await post.findOne(id);
+
+        respond(response, post.remove(target));
     }
 }
 

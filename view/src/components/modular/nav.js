@@ -12,10 +12,10 @@ const Nav = ({ title, options }) => (
                     &nbsp; {title.text}
                 </Link>
             </li>
-            <li className='text-right'>
+            <li className='text--right'>
                 <ul className='nav__list'>
                     {options.map((option, index) => (
-                        <li className='small-text-middle' key={`option-${index}`}>
+                        <li className='small' key={`option-${index}`}>
                             <Link to={option.route}>
                                 <Emoji description={option.descrition} icon={option.icon} />
                                 &nbsp; {option.text}

@@ -1,17 +1,22 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { saveDataStorage, getDataStorage } from '../helpers/auth';
+import { saveDataStorage, getDataStorage, removeStorage } from '../helpers/auth';
+import { sendData } from '../helpers/fetch';
+import { baseLink, links } from '../helpers/routes';
 import * as actions from '../actions/itemaction';
 
 import Holder from '../components/forms/newlist';
 import Aside from '../components/modular/aside';
 
 function NewList({ itemsProps, addItem, removeItem }) {
+    const [store, setStore] = useState('');
     const [section, setSection] = useState('mercearia');
     const [item, setItem] = useState('');
     const [quantity, setQuantity] = useState(0);
     const [type, setType] = useState('kg');
     const [id, setId] = useState(0);
+    const [redirect, setRedirect] = useState(false);
 
     const handleAdd = () => {
         setId(prevCounter => prevCounter + 1);
@@ -60,13 +65,52 @@ function NewList({ itemsProps, addItem, removeItem }) {
         removeItem(parentId);
     };
 
+    const handleSubmit = () => {
+        let jsonData = {
+            store,
+            section: [],
+            item: [],
+            type: [],
+            quantity: []
+        }
+
+        const user = getDataStorage('user');
+
+        if(store && store.length >= 4) {
+            for(let i of itemsProps) {
+                jsonData.section.push(i.section);
+                jsonData.item.push(i.item);
+                jsonData.type.push(i.type);
+                jsonData.quantity.push(i.quantity);
+            }
+
+            sendData(
+                baseLink + links.items.base + links.items.new,
+                JSON.stringify({ email: user.email, ...jsonData }),
+                'POST',
+                user.token
+            )
+            .then(data => {
+                if(!data.error) {
+                    removeStorage('list');
+                    setRedirect(true);
+                }
+            });
+        }
+    };
+
     useEffect(() => {
         restoreStorage();
     }, [restoreStorage]);
 
     return (
         <div className='holder--list'>
-            <Aside products={itemsProps} handler={removeItemFromList} />
+            <Aside 
+                products={itemsProps} 
+                handler={removeItemFromList} 
+                store={{value: store, changer: setStore}}
+                submit={handleSubmit}
+            />
 
             <Holder
                 type={{value: type, changer: setType}}
@@ -75,6 +119,8 @@ function NewList({ itemsProps, addItem, removeItem }) {
                 item={{value: item, changer: setItem}}
                 handleAdd={handleAdd}
             />
+
+            { redirect && <Redirect to='/' />}
         </div>
     )
 }

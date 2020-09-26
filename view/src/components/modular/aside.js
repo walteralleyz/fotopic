@@ -3,7 +3,7 @@ import React from 'react';
 import Button from '../modular/button';
 import Emoji from '../modular/emoji';
 
-const Aside = ({ products, handler }) => (
+const Aside = ({ products, handler, store, submit }) => (
     <aside className='aside'>
         <div className='holder--product'>
             {products.map((product, i) => (
@@ -21,11 +21,22 @@ const Aside = ({ products, handler }) => (
                 </div>
             ))}
         </div>
-        <div style={{ textAlign: 'center', position: 'absolute', bottom: '0', width: '100%' }}>
+        <div style={{ position: 'absolute', bottom: '0', width: '100%' }}>
+            <input
+                type='text'
+                value={store.value}
+                onChange={e => store.changer(e.currentTarget.value)}
+                placeholder={'Nome do Mercado'}
+                style={{ width: '100%' }}
+                minLength={4}
+                required
+            />
+
             <Button
                 type='submit'
                 text='Salvar Lista'
                 size='full'
+                handler={submit}
             />
         </div>
     </aside>

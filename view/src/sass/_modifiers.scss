@@ -1,0 +1,59 @@
+.text--center {
+    text-align: center;
+}
+
+.text--right {
+    text-align: right;
+}
+
+.text--danger {
+    color: $bloody;
+}
+
+.text--light {
+    color: $light;
+}
+
+.text--bold {
+    font-weight: bold;
+}
+
+.text--shadow {
+    text-shadow: 0 0 1px rgba(0, 0, 0, 0.8);
+}
+
+.text--small {
+    font-size: small;
+}
+
+.button--blue {
+    background-color: $bluu;
+}
+
+.button--purple {
+    background-color: $purple;
+}
+
+.button--red {
+    background-color: $bloody;
+}
+
+.button--small {
+    padding: 8px 16px;
+}
+
+.button--large {
+    padding: 16px 32px;
+}
+
+.button--full {
+    width: 100%;
+}
+
+.d--flex {
+    display: flex;
+}
+
+.justify--evenly {
+    justify-content: space-evenly;
+}

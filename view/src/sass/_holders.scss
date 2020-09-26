@@ -1,0 +1,109 @@
+.holder--table {
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-top: 32px;
+    width: 100%;
+
+    @media only screen and (max-width: $mobile) {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+.holder--code {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 32px;
+
+    input {
+        width: 10%;
+        text-align: center;
+        margin: 0 5px;
+        appearance: textfield;
+
+        &::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+    }
+}
+
+.holder--404 {
+    width: 85%;
+    margin: 0 auto;
+    text-align: center;
+
+    img {
+        width: 40%;
+    }
+}
+
+.holder--list {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-height: calc(100vh - 45px);
+
+    @media only screen and (max-width: 620px) {
+        flex-direction: column;
+    }
+
+    .aside {
+        width: 250px;
+        max-height: calc(100vh - 45px);
+        background-color: $purple;
+        position: relative;
+
+        @media only screen and (max-width: $mobile) {
+            width: 100%;
+        }
+
+        .product {
+            padding: 8px;
+            color: $light;
+            text-shadow: 0 0 1px rgba(0, 0, 0, 0.8);
+
+            .product__description {
+                margin: 4px 0;
+                display: flex;
+                flex-direction: row;
+                text-transform: capitalize;
+                justify-content: space-between;
+                color: $rainy;
+            }
+
+            .product__title {
+                display: flex;
+                justify-content: space-between;
+                text-transform: capitalize;
+
+                span {
+                    font-size: 0.7rem;
+
+                    &:hover {
+                        cursor: pointer;
+                        opacity: 0.6;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.holder--product {
+    max-height: calc(100% - 63px);
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+.holder--product::-webkit-scrollbar-track {
+    appearance: none;
+}
