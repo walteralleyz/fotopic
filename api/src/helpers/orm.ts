@@ -10,10 +10,7 @@ dotenv.config();
 export function connect() {
     createConnection({
         type: 'postgres',
-        database: process.env.DATABASE_BASE,
-        port:    +process.env.DATABASE_PORT,
-        username: process.env.DATABASE_USER,
-        password: process.env.DATABASE_PSWD,
+        url: process.env.DATABASE_URL,
         synchronize: true,
         logging: false,
         entities: [

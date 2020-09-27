@@ -18,11 +18,13 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use('/user', userRoutes);
-app.use('/item', itemRoutes);
+app.use(express.static(__dirname + '/build'));
 
-app.use('*', (request: any, response: any) => {
-    response.status(403).json({ error: 'Esse caminho está indisponivel!' });
+app.use('/api/user', userRoutes);
+app.use('/api/item', itemRoutes);
+
+app.get('*', (request: any ,response: any) =>{
+    response.sendFile(path.join(__dirname + '/build/index.html'));
 });
 
 app.listen(port, () => console.log('Listen at port %d', port));

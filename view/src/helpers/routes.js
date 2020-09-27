@@ -7,7 +7,7 @@ export const routes = {
     main: '/'
 };
 
-export const baseLink = 'http://localhost:5000';
+export const baseLink = `https://${window.location.host}`;
 
 export const links = {
     items: {
