@@ -18,13 +18,13 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(express.static(__dirname + '/build'));
+app.use(express.static(__dirname + '/../public'));
 
 app.use('/api/user', userRoutes);
 app.use('/api/item', itemRoutes);
 
 app.get('*', (request: any ,response: any) =>{
-    response.sendFile(path.join(__dirname + '/build/index.html'));
+    response.sendFile(path.join(__dirname + '/../public/index.html'));
 });
 
 app.listen(port, () => console.log('Listen at port %d', port));
