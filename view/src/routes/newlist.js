@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { saveDataStorage, getDataStorage, removeStorage } from '../helpers/auth';
 import { sendData } from '../helpers/fetch';
@@ -9,7 +9,7 @@ import * as actions from '../actions/itemaction';
 import Holder from '../components/forms/newlist';
 import Aside from '../components/modular/aside';
 
-function NewList({ itemsProps, addItem, removeItem }) {
+function NewList({ itemsProps, addItem, removeItem, clearItem }) {
     const [store, setStore] = useState('');
     const [section, setSection] = useState('mercearia');
     const [item, setItem] = useState('');
@@ -17,6 +17,10 @@ function NewList({ itemsProps, addItem, removeItem }) {
     const [type, setType] = useState('kg');
     const [id, setId] = useState(0);
     const [redirect, setRedirect] = useState(false);
+
+    const [expand, setExpand] = useState('Expandir');
+
+    const { ID } = useParams();
 
     const handleAdd = () => {
         setId(prevCounter => prevCounter + 1);
@@ -75,6 +79,10 @@ function NewList({ itemsProps, addItem, removeItem }) {
         }
 
         const user = getDataStorage('user');
+        const sendLink = ID
+        ? baseLink + links.items.base + '/' + ID
+        : baseLink + links.items.base + links.items.new;
+        const method = ID ? 'PUT' : 'POST';
 
         if(store && store.length >= 4) {
             for(let i of itemsProps) {
@@ -85,9 +93,9 @@ function NewList({ itemsProps, addItem, removeItem }) {
             }
 
             sendData(
-                baseLink + links.items.base + links.items.new,
+                sendLink,
                 JSON.stringify({ email: user.email, ...jsonData }),
-                'POST',
+                method,
                 user.token
             )
             .then(data => {
@@ -103,6 +111,10 @@ function NewList({ itemsProps, addItem, removeItem }) {
         restoreStorage();
     }, [restoreStorage]);
 
+    useEffect(() => {
+        clearItem()
+    }, [clearItem]);
+
     return (
         <div className='holder--list'>
             <Aside 
@@ -110,6 +122,7 @@ function NewList({ itemsProps, addItem, removeItem }) {
                 handler={removeItemFromList} 
                 store={{value: store, changer: setStore}}
                 submit={handleSubmit}
+                expand={{ text: expand, handle: setExpand }}
             />
 
             <Holder
@@ -131,7 +144,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     addItem: item => dispatch(actions.addItem(item)),
-    removeItem: id => dispatch(actions.removeItem(id))
+    removeItem: id => dispatch(actions.removeItem(id)),
+    clearItem: () => dispatch(actions.clearItem())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewList);

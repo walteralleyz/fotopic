@@ -55,53 +55,16 @@
     @media only screen and (max-width: 620px) {
         flex-direction: column;
     }
-
-    .aside {
-        width: 250px;
-        max-height: calc(100vh - 45px);
-        background-color: $purple;
-        position: relative;
-
-        @media only screen and (max-width: $mobile) {
-            width: 100%;
-        }
-
-        .product {
-            padding: 8px;
-            color: $light;
-            text-shadow: 0 0 1px rgba(0, 0, 0, 0.8);
-
-            .product__description {
-                margin: 4px 0;
-                display: flex;
-                flex-direction: row;
-                text-transform: capitalize;
-                justify-content: space-between;
-                color: $rainy;
-            }
-
-            .product__title {
-                display: flex;
-                justify-content: space-between;
-                text-transform: capitalize;
-
-                span {
-                    font-size: 0.7rem;
-
-                    &:hover {
-                        cursor: pointer;
-                        opacity: 0.6;
-                    }
-                }
-            }
-        }
-    }
 }
 
 .holder--product {
     max-height: calc(100% - 63px);
     overflow-y: auto;
     scrollbar-width: none;
+
+    @media only screen and (max-width: $mobile) {
+        display: none;
+    }
 }
 
 .holder--product::-webkit-scrollbar-track {

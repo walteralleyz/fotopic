@@ -40,6 +40,68 @@
     }
 }
 
+.aside {
+    width: 250px;
+    max-height: calc(100vh - 45px);
+    background-color: $purple;
+    position: relative;
+
+    @media only screen and (max-width: $mobile) {
+        width: 100%;
+    }
+
+    .aside__expand {
+        background-color: rgba(0, 0, 0, 0.7);
+        text-align: center;
+        display: block;
+        color: $light;
+
+        @media only screen and (min-width: $mobile) {
+            display: none;
+        }
+    }
+
+    .aside__bottom {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+
+        @media only screen and (max-width: $mobile) {
+            position: relative;
+        }
+    }
+
+    .product {
+        padding: 8px;
+        color: $light;
+        text-shadow: 0 0 1px rgba(0, 0, 0, 0.8);
+
+        .product__description {
+            margin: 4px 0;
+            display: flex;
+            flex-direction: row;
+            text-transform: capitalize;
+            justify-content: space-between;
+            color: $rainy;
+        }
+
+        .product__title {
+            display: flex;
+            justify-content: space-between;
+            text-transform: capitalize;
+
+            span {
+                font-size: 0.7rem;
+
+                &:hover {
+                    cursor: pointer;
+                    opacity: 0.6;
+                }
+            }
+        }
+    }
+}
+
 .modal {
     position: absolute;
     width: 100vw;

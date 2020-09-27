@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { Redirect } from 'react-router-dom';
 
 import { getData, sendData } from '../helpers/fetch';
 import { baseLink, links } from '../helpers/routes';
-import { getDataStorage } from '../helpers/auth';
+import { getDataStorage, saveDataStorage } from '../helpers/auth';
 
 import Table from '../components/modular/table';
 import Modal from '../components/modular/modal';
@@ -15,6 +16,8 @@ export default function Main() {
         title: 'Tem certeza que deseja excluir?',
         visible: false
     });
+
+    const [redirect, setRedirect] = useState(false);
 
     const items = useCallback(() => {
         if(user) {
@@ -42,6 +45,15 @@ export default function Main() {
         .then(data => window.location.reload());
     };
 
+    const edit = id => {
+        const buyList = itemList.filter((item) => item.id === id);
+        const list = rebuildList(buyList[0]);
+
+        saveDataStorage('list', list);
+        setDeleteId(id);
+        setRedirect(true);
+    };
+
     useEffect(() => setUser(getDataStorage('user')), []);
     useEffect(() => items(), [items]);
 
@@ -54,12 +66,15 @@ export default function Main() {
                 obj={rebuildList(item)}
                 remove={showModal}
                 key={i}
+                edit={edit}
             />)
             : 'main'}
 
             {modal.visible && <Modal title={modal.title} verifySign={remove}>
                 <p style={{ marginBottom: '16px' }}>Deseja excluir?</p>
             </Modal>}
+
+            {redirect && <Redirect to={`/edit/${deleteId}`} />}
         </div>
     )
 }

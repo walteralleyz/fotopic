@@ -11,6 +11,9 @@ export default (state = [], action) => {
         case actions.REMOVE_ITEM:
             return state.filter((item, i) => i !== +action.id);
 
+        case actions.CLEAR_ITEM:
+            return [];
+
         default:
             return state;
     }

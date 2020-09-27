@@ -2,7 +2,7 @@ import React from 'react';
 
 import Emoji from './emoji';
 
-const Table = ({ item, i, obj, remove }) => (
+const Table = ({ item, i, obj, remove, edit }) => (
     <table className='table' key={`table-${i}`}>
         <thead>
             <tr>
@@ -12,7 +12,7 @@ const Table = ({ item, i, obj, remove }) => (
                 </td>
 
                 <td className='d--flex justify--evenly clicable'>
-                    <Emoji icon={'pencil'} description={'Editar'} />
+                    <Emoji icon={'pencil'} description={'Editar'} handler={() => edit(item.id)} />
                     <Emoji icon={'exit'} description={'Excluir'} handler={() => remove(item.id)} />
                 </td>
             </tr>

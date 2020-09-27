@@ -37,6 +37,10 @@ function App() {
 						<NewList />
 					</PrivateRoute>
 
+					<PrivateRoute path={routes.edit}>
+						<NewList />
+					</PrivateRoute>
+
 					<Route path={routes.signin}>
 						<Signin />
 					</Route>

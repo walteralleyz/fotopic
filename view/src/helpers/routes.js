@@ -3,6 +3,7 @@ export const routes = {
     signup: '/signup',
     signout: '/signout',
     new: '/new',
+    edit: '/edit/:ID',
     main: '/'
 };
 

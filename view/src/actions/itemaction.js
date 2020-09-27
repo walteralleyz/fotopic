@@ -9,3 +9,7 @@ export const removeItem = id => ({
     type: actions.REMOVE_ITEM,
     id
 });
+
+export const clearItem = () => ({
+    type: actions.CLEAR_ITEM
+});
