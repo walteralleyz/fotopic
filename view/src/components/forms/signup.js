@@ -7,7 +7,7 @@ import Form from '../modular/form';
 import Input from '../modular/input';
 import Button from '../modular/button';
 
-const Holder = ({ name, email }) => (
+const Holder = ({ name, email, handler }) => (
     <Form title='Vamos Cadastrar!'>
         <Input
             type='text'
@@ -32,6 +32,7 @@ const Holder = ({ name, email }) => (
         <Button
             type='submit'
             color='purple'
+            handler={handler}
         />
     </Form>
 );

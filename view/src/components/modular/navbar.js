@@ -16,8 +16,7 @@ function Navbar({ user, toggleLogged }) {
     ] 
     : [
         { text: 'Sobre Nós', icon: 'book', description: 'sobre', route: '/about' },
-        { text: 'Contato', icon: 'phone', description: 'contate-nos', route: '/contact' },
-        { text: 'API', icon: 'laptop', description: 'api', route: '/api' }
+        { text: 'Criar Conta', icon: 'laptop', description: 'criar', route: '/signup' }
     ];
 
     useEffect(() => {

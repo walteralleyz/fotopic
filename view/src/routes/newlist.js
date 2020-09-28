@@ -5,11 +5,12 @@ import { saveDataStorage, getDataStorage, removeStorage } from '../helpers/auth'
 import { sendData } from '../helpers/fetch';
 import { baseLink, links } from '../helpers/routes';
 import * as actions from '../actions/itemaction';
+import * as toast from '../actions/toastactions';
 
 import Holder from '../components/forms/newlist';
 import Aside from '../components/modular/aside';
 
-function NewList({ itemsProps, addItem, removeItem, clearItem }) {
+function NewList({ itemsProps, addItem, removeItem, clearItem, toastStatus, toastText }) {
     const [store, setStore] = useState('');
     const [section, setSection] = useState('mercearia');
     const [item, setItem] = useState('');
@@ -102,6 +103,11 @@ function NewList({ itemsProps, addItem, removeItem, clearItem }) {
                 if(!data.error) {
                     removeStorage('list');
                     setRedirect(true);
+                    toastStatus('success');
+                    toastText('Sua lista foi salva!');
+                } else {
+                    toastStatus('danger');
+                    toastText('Ocorreu algum erro!');
                 }
             });
         }
@@ -139,13 +145,17 @@ function NewList({ itemsProps, addItem, removeItem, clearItem }) {
 }
 
 const mapStateToProps = state => ({
-    itemsProps: state.item
+    itemsProps: state.item,
+    tStatus: state.toast.status,
+    tText: state.toast.text
 });
 
 const mapDispatchToProps = dispatch => ({
     addItem: item => dispatch(actions.addItem(item)),
     removeItem: id => dispatch(actions.removeItem(id)),
-    clearItem: () => dispatch(actions.clearItem())
+    clearItem: () => dispatch(actions.clearItem()),
+    toastText: text => dispatch(toast.toastText(text)),
+    toastStatus: status => dispatch(toast.toastStatus(status))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewList);

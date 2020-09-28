@@ -18,10 +18,11 @@
     margin-bottom: 32px;
 
     input {
-        width: 10%;
+        width: 20%;
         text-align: center;
         margin: 0 5px;
         appearance: textfield;
+        font-size: 2rem;
 
         &::-webkit-outer-spin-button {
             -webkit-appearance: none;

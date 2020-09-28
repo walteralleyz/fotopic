@@ -4,10 +4,12 @@ export const routes = {
     signout: '/signout',
     new: '/new',
     edit: '/edit/:ID',
+    about: '/about',
+    api: '/api',
     main: '/'
 };
 
-export const baseLink = `https://${window.location.host}`;
+export const baseLink = `https://sprlist.herokuapp.com/api`;
 
 export const links = {
     items: {
@@ -20,5 +22,10 @@ export const links = {
         signup: '/signup',
         signin: '/signin',
         verify: '/verifysign'
+    },
+
+    email: {
+        base: '/email',
+        send: '/incoming'
     }
 };

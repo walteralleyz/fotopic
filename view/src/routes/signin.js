@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -11,8 +11,9 @@ import { isEmail } from '../helpers/validator';
 import { saveDataStorage } from '../helpers/auth';
 
 import * as actions from '../actions/useraction';
+import * as toast from '../actions/toastactions';
 
-function Signin({ toggleLogged }) {
+function Signin({ toggleLogged, toastStatus, toastText }) {
     const [userEmail, setUserEmail] = useState('');
     const [redirect, setRedirect] = useState(false);
 
@@ -28,7 +29,7 @@ function Signin({ toggleLogged }) {
         visible: false
     });
 
-    const verifySign = () => {
+    const verifyCB = useCallback(() => {
         const { a, b, c, d } = code;
 
         sendData(
@@ -37,26 +38,41 @@ function Signin({ toggleLogged }) {
             'POST'
         )
             .then(data => {
-                toggleLogged(true);
-                saveDataStorage('user', data);
-                setRedirect(true);
+                if(!data.error) {
+                    toggleLogged(true);
+                    saveDataStorage('user', data);
+                    setRedirect(true);
+                } else {
+                    toastStatus('danger');
+                    toastText('Código Incorreto!');
+                }
             });
-    };
+    }, [code, toggleLogged, toastStatus, toastText, userEmail]);
+
+    const emailCB = useCallback(() => {
+        sendData(
+            baseLink + links.user.base + links.user.signin,
+            JSON.stringify({ email: userEmail }),
+            'POST'
+        )
+            .then(data => {
+                if(!data.error) {
+                    saveDataStorage('user', data);
+                    setModal({
+                        ...modal,
+                        visible: true
+                    });
+                } else {
+                    toastStatus('danger');
+                    toastText('Email não encontrado!');
+                }
+            });
+    }, [modal, toastStatus, toastText, userEmail]);
+
+    const verifySign = () => verifyCB();
 
     const handleSubmit = () => {
-        if (isEmail(userEmail)) {
-            sendData(
-                baseLink + links.user.base + links.user.signin,
-                JSON.stringify({ email: userEmail }),
-                'POST'
-            )
-                .then(data => saveDataStorage('user', data));
-
-            setModal({
-                ...modal,
-                visible: true
-            });
-        }
+        if (isEmail(userEmail)) emailCB();
     };
 
     return (
@@ -80,11 +96,15 @@ function Signin({ toggleLogged }) {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-    logged: state.logged
+    logged: state.logged,
+    tStatus: state.toast.status,
+    tText: state.toast.text
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    toggleLogged: b => dispatch(actions.toggleLogged(b))
+    toggleLogged: b => dispatch(actions.toggleLogged(b)),
+    toastStatus: status => dispatch(toast.toastStatus(status)),
+    toastText: text => dispatch(toast.toastText(text))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Signin);

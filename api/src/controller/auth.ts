@@ -4,7 +4,7 @@ import JWT from 'jsonwebtoken';
 
 dotenv.config();
 
-export const sendEmailSignin = (email: string, token: number) => {
+export const sendEmail = (email: string, content: string, sub: string) => {
     const transporter = nodemailer.createTransport({
         host: 'smtp.zoho.com',
         port: 465,
@@ -16,17 +16,10 @@ export const sendEmailSignin = (email: string, token: number) => {
     });
 
     transporter.sendMail({
-        from: '"Flavio" <superlistanode@zohomail.com>',
+        from: `"Flavio" <${process.env.EMAIL_USER}>`,
         to: email,
-        subject: 'Seu código de confirmação',
-        html: `
-            <div style="text-align: center">
-                <h1>SuperLista</h1>
-                <h5>Sua lista de compras online</h5>
-            </div>
-            <p>Seu código de confirmação é:</p>
-            <h1>${token}</h1>
-        `
+        subject: sub,
+        html: content
     });
 };
 	

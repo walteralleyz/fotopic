@@ -7,6 +7,7 @@ import cors from 'cors';
 import { connect } from './helpers/orm';
 import { routes as userRoutes } from './routes/user';
 import { routes as itemRoutes } from './routes/itemList';
+import { routes as emailRouter } from './routes/email';
 
 const app: any = express();
 const port: string | number = process.env.PORT || 5000;
@@ -22,6 +23,7 @@ app.use(express.static(__dirname + '/../public'));
 
 app.use('/api/user', userRoutes);
 app.use('/api/item', itemRoutes);
+app.use('/api/email', emailRouter);
 
 app.get('*', (request: any ,response: any) =>{
     response.sendFile(path.join(__dirname + '/../public/index.html'));

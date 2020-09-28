@@ -1,14 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { getData, sendData } from '../helpers/fetch';
 import { baseLink, links } from '../helpers/routes';
 import { getDataStorage, saveDataStorage } from '../helpers/auth';
+import * as actions from '../actions/toastactions';
 
 import Table from '../components/modular/table';
 import Modal from '../components/modular/modal';
 
-export default function Main() {
+function Main({ toastStatus, toastText }) {
     const [itemList, setItemList] = useState(false);
     const [user, setUser] = useState(false);
     const [deleteId, setDeleteId] = useState(false);
@@ -17,6 +19,7 @@ export default function Main() {
         visible: false
     });
 
+    const [loading, setLoading] = useState(true);
     const [redirect, setRedirect] = useState(false);
 
     const items = useCallback(() => {
@@ -24,15 +27,18 @@ export default function Main() {
             const link = `${baseLink}${links.items.base}/${user.id}`;
 
             getData(link, user.token)
-            .then(data => setItemList(data));
+            .then(data => {
+                if(!data.error)
+                    setItemList(data)
+
+                setLoading(false);
+            });
         }
     }, [user]);
 
     const showModal = id => {
         setDeleteId(id);
         setModal({ ...modal, visible: true });
-
-        console.log(id);
     };
 
     const remove = () => {
@@ -42,7 +48,13 @@ export default function Main() {
             'DELETE',
             user.token
         )
-        .then(data => window.location.reload());
+        .then(data => {
+            toastText('Lista removida!');
+            toastStatus('success');
+
+            setModal({ ...modal, visible: false });
+            items();
+        });
     };
 
     const edit = id => {
@@ -58,17 +70,24 @@ export default function Main() {
     useEffect(() => items(), [items]);
 
     return (
-        <div className='holder--table'>{itemList 
-            ? itemList.map((item, i) => 
-            <Table 
-                item={item} 
-                i={i} 
-                obj={rebuildList(item)}
-                remove={showModal}
-                key={i}
-                edit={edit}
-            />)
-            : 'main'}
+        <div className='holder--table'>
+        {!loading ? 
+            itemList && itemList.length ? 
+                itemList.map((item, i) => 
+                    <Table 
+                        item={item} 
+                        i={i} 
+                        obj={rebuildList(item)}
+                        remove={showModal}
+                        key={i}
+                        edit={edit}
+                    />)
+            : 
+                <div style={{ width: '100%', color: '#fff', textShadow: '0 0 1px #333' }}>
+                    <h1 style={{ textAlign: 'center' }}>Você ainda não tem nenhuma lista!</h1>    
+                </div>
+        : <div className='loader'></div>
+        }
 
             {modal.visible && <Modal title={modal.title} verifySign={remove}>
                 <p style={{ marginBottom: '16px' }}>Deseja excluir?</p>
@@ -96,3 +115,15 @@ const rebuildList = list => {
 
     return newList.sort((a, b) => a.section.localeCompare(b.section));
 };
+
+const mapStateToProps = state => ({
+    toastText: state.toast.text,
+    toastStatus: state.toast.status
+});
+
+const mapDispatchToProps = dispatch => ({
+    toastText: text => dispatch(actions.toastText(text)),
+    toastStatus: status => dispatch(actions.toastStatus(status))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Main);

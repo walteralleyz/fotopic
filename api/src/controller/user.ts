@@ -3,7 +3,8 @@ import JWT from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
 import { SuperUser } from '../entities/user';
-import { sendEmailSignin } from './auth';
+import { sendEmail } from './auth';
+import { content } from '../helpers/emailTemplate';
 
 dotenv.config();
 
@@ -36,7 +37,7 @@ export class Controller {
             data.code = code;
             user.save(data);
 
-            sendEmailSignin(data.email, code);
+            sendEmail(data.email, content(code), 'Seu código de confirmação');
 
             response.status(200).json({ email: data.email });
         })
