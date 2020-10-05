@@ -24,11 +24,11 @@ export class AngeloniCategories implements CategoryFinder {
     }
 
     setProductsSelector() {
-        return 'div.title > a.ng-binding';
+        return 'h2.box-produto__desc-prod';
     }
 
     setPricesSelector() {
-        return 'div.preco-por';
+        return 'div.box-produto__preco';
     }
 }
 
@@ -38,11 +38,11 @@ export class MeschkeCategories implements CategoryFinder {
     }
 
     setProductsSelector() {
-        return 'div.title > a.ng-binding';
+        return 'span.description-text';
     }
 
     setPricesSelector() {
-        return 'div.preco-por';
+        return 'div.active-price-box ';
     }
 }
 
@@ -52,11 +52,11 @@ export class CarrefourCategories implements CategoryFinder {
     }
 
     setProductsSelector() {
-        return 'div.title > a.ng-binding';
+        return 'h2.carrefourbr-carrefour-components-0-x-productName';
     }
 
     setPricesSelector() {
-        return 'div.preco-por';
+        return 'span.vtex-store-components-3-x-sellingPrice';
     }
 }
 
@@ -66,10 +66,10 @@ export class GenericCategories implements CategoryFinder {
     }
 
     setProductsSelector() {
-        return 'div.title > a.ng-binding';
+        return '.title';
     }
 
     setPricesSelector() {
-        return 'div.preco-por';
+        return '.price';
     }
 }

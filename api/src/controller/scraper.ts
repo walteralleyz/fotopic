@@ -1,12 +1,5 @@
 import puppeteer, { Browser } from 'puppeteer';
-import {
-    CategoryFinder,
-    KochCategories,
-    AngeloniCategories,
-    MeschkeCategories,
-    CarrefourCategories,
-    GenericCategories
-} from './scrapercategory';
+import { CategoryFinder } from './scrapercategory';
 
 abstract class Scraper {
     protected browser: Browser;
@@ -37,22 +30,10 @@ abstract class Scraper {
 
     abstract getProducts(): void;
 
+    abstract createStore(): void;
+
     setStore(store: string) {
         this.store = store.toLowerCase();
-    }
-
-    // Factory Method
-    createStore() {
-        if(this.store.indexOf('koch') !== -1)
-            this.storeManager = new KochCategories();
-        else if(this.store.indexOf('angeloni') !== -1)
-            this.storeManager = new AngeloniCategories();
-        else if(this.store.indexOf('meschke') !== -1)
-            this.storeManager = new MeschkeCategories();
-        else if(this.store.indexOf('carrefour') !== -1)
-            this.storeManager = new CarrefourCategories();
-        else
-            this.storeManager = new GenericCategories();
     }
 
     async start() {
