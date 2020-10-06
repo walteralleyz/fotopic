@@ -11,7 +11,11 @@ abstract class Scraper {
     protected storeManager: CategoryFinder;
 
     protected page: any;
-    protected storeURL: string;
+    protected options = {
+        headless: false,
+        width: 1024,
+        height: 768
+    }
 
     // Template method
     async main() {
@@ -19,36 +23,35 @@ abstract class Scraper {
         this.pricesSelector = this.storeManager.setPricesSelector();
 
         await this.start();
-        await this.goto();
-        await this.selectFirstResult();
-        await this.storeManager.gotoCategories(this.page, this.storeURL);
+        await this.storeManager.gotoCategories(this.page);
         await this.getProducts();
+        await this.saveStore();
         await this.close();
     }
-
-    abstract selectFirstResult(): void;
 
     abstract getProducts(): void;
 
     abstract createStore(): void;
+
+    abstract saveStore(): void;
 
     setStore(store: string) {
         this.store = store.toLowerCase();
     }
 
     async start() {
-        this.browser = await puppeteer.launch({ headless: false });
+        this.browser = await puppeteer.launch({ 
+            headless: this.options.headless,
+            args: [`--window-size=${this.options.width},${this.options.height}`] 
+        });
+
         this.page = await this.browser.pages(); // Returns a pages array
         this.page = this.page[0]; // Capture the first page of array cause i dont need more than one
-    }
 
-    async goto() {
-        const store = this.store + ' mercado';
-
-        // Start point is google. From here we go to store name
-        await this.page.goto('https://google.com');
-        await this.page.$eval('input[name=q]', (el: any, value: string) => el.value = value, store);
-        await this.page.type('input[name=q]', String.fromCharCode(13)); // Insert enter key
+        await this.page.setViewport({
+            width: this.options.width,
+            height: this.options.height
+        });
     }
 
     async close() {
