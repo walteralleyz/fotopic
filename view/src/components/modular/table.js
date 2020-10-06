@@ -47,12 +47,20 @@ const calcTotal = obj => {
 
     for(let o of obj) {
         let singular = o.item.trim().split(' ');
-        prices.push(parseFloat(singular[singular.length -1].replace(',', '.')));
+        let price = singular[singular.length -1];
+
+        price = parseFloat(singular[singular.length -1]
+            .replace(',', '.')
+            .replace('R$', '')
+        );
+
+        if(!isNaN(price))
+            prices.push(o.quantity * price);
     }
 
-    total = prices.reduce((a, b) => a + b);
+    total = prices.length && prices.reduce((a, b) => a + b);
 
-    return !isNaN(total) && `R$${total}`;
+    return !isNaN(total) && `R$${total.toFixed(2)}`;
 }
 
 export default Table;
