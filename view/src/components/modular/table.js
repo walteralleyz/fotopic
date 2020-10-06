@@ -33,7 +33,26 @@ const Table = ({ item, i, obj, remove, edit }) => (
                 </tr>
             ))}
         </tbody>
+        <tfoot>
+            <tr>
+                <td colSpan={4}><i style={{ fontWeight: 'bold' }}>Total Estimado: {calcTotal(obj)}</i></td>
+            </tr>
+        </tfoot>
     </table>
 );
+
+const calcTotal = obj => {
+    let prices = [];
+    let total;
+
+    for(let o of obj) {
+        let singular = o.item.trim().split(' ');
+        prices.push(parseFloat(singular[singular.length -1].replace(',', '.')));
+    }
+
+    total = prices.reduce((a, b) => a + b);
+
+    return !isNaN(total) && `R$${total}`;
+}
 
 export default Table;

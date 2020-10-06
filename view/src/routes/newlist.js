@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Redirect, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { saveDataStorage, getDataStorage, removeStorage } from '../helpers/auth';
-import { sendData } from '../helpers/fetch';
+import { sendData, getData } from '../helpers/fetch';
 import { baseLink, links } from '../helpers/routes';
 import * as actions from '../actions/itemaction';
 import * as toast from '../actions/toastactions';
@@ -11,7 +11,8 @@ import Holder from '../components/forms/newlist';
 import Aside from '../components/modular/aside';
 
 function NewList({ itemsProps, addItem, removeItem, clearItem, toastStatus, toastText }) {
-    const [store, setStore] = useState('');
+    const [store, setStore] = useState('superkoch');
+    const [products, setProducts] = useState('');
     const [section, setSection] = useState('mercearia');
     const [item, setItem] = useState('');
     const [quantity, setQuantity] = useState(0);
@@ -121,6 +122,16 @@ function NewList({ itemsProps, addItem, removeItem, clearItem, toastStatus, toas
         clearItem()
     }, [clearItem]);
 
+    useEffect(() => {
+        getData(
+            baseLink + links.scraper.base + links.scraper.retrieve + '/' + store,
+            getDataStorage('user').token
+        )
+            .then(data => {
+                if(!data.error) setProducts(data.success);
+            })
+    }, [store]);
+
     return (
         <div className='holder--list'>
             <Aside 
@@ -137,6 +148,7 @@ function NewList({ itemsProps, addItem, removeItem, clearItem, toastStatus, toas
                 quantity={{value: quantity, changer: setQuantity}}
                 item={{value: item, changer: setItem}}
                 handleAdd={handleAdd}
+                products={products}
             />
 
             { redirect && <Redirect to='/' />}

@@ -5,7 +5,7 @@ import Input from '../modular/input';
 import Select from '../modular/select';
 import Button from '../modular/button';
 
-const Holder = ({ section, item, quantity, type, handleAdd }) => (
+const Holder = ({ section, item, quantity, type, handleAdd, products }) => (
     <Form title='Cadastro de Item'>
         <Select
             value={section.value}
@@ -29,6 +29,7 @@ const Holder = ({ section, item, quantity, type, handleAdd }) => (
             changer={e => item.changer(e.currentTarget.value)}
             text='Ex.: Tomate'
             name='Produto'
+            list='prod'
         />
 
         <Input
@@ -57,6 +58,12 @@ const Holder = ({ section, item, quantity, type, handleAdd }) => (
                 handler={handleAdd}
             />
         </div>
+
+        <datalist id='prod'>
+            {products && products.map((p, i) => (
+                <option key={i} value={p}>{p}</option>
+            ))}
+        </datalist>
     </Form>
 );
 

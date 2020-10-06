@@ -10,6 +10,7 @@ export const routes = {
 };
 
 export const baseLink = `https://sprlist.herokuapp.com/api`;
+// export const baseLink = 'http://localhost:5000/api';
 
 export const links = {
     items: {
@@ -27,5 +28,10 @@ export const links = {
     email: {
         base: '/email',
         send: '/incoming'
+    },
+
+    scraper: {
+        base: '/scrap',
+        retrieve: '/retrieve'
     }
 };

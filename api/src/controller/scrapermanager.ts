@@ -44,6 +44,12 @@ class ScraperManager extends Scraper {
             console.log(`${this.store} salvo!`);
         });
     }
+
+    getStoreData(store: string) {
+        const data = fs.readFileSync(`${__dirname}/../../data/${store}.txt`, 'utf-8').toString();
+
+        return data.trim().split('\n');
+    }
 }
 
 export default ScraperManager;
